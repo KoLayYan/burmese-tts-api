@@ -8,8 +8,12 @@
   ],
   "routes": [
     {
+      "src": "/generate-audio",
+      "destination": "/api/index.py"
+    },
+    {
       "src": "/(.*)",
-      "destination": "api/index.py"
+      "destination": "/index.html"
     }
   ]
 }
