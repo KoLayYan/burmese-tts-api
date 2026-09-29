@@ -124,8 +124,8 @@
         audioPlayer.style.display = "none";
 
         try {
-            // Vercel Backend ရဲ့ URL ကို ဤနေရာတွင် ထည့်ပါ (ဥပမာ - https://your-app.vercel.app/generate-audio)
-            const backendUrl = "https://burmese-tts-51stm5ost-stream-hub2.vercel.app/generate-audio";
+            // တရားဝင် အလုပ်လုပ်နေသော Vercel Backend URL
+            const backendUrl = "https://burmese-tts-api.vercel.app/generate-audio";
 
             const response = await fetch(backendUrl, {
                 method: 'POST',
