@@ -6,7 +6,6 @@ import requests
 
 app = FastAPI()
 
-# CORS ကို အပြည့်အစုံ ဖွင့်ပေးရန်
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,7 +16,7 @@ app.add_middleware(
 
 class TTSRequest(BaseModel):
     text: str
-    voice_id: str = "ClAtsC1ukzT6U0XgCO4c"
+    voice_id: str = "21m00Tcm4TlvDq8ikWAM"
 
 @app.get("/")
 def home():
