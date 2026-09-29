@@ -27,7 +27,7 @@ async def generate_audio(request: TTSRequest):
     if not request.text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty")
     
-    # ပေးထားသော API Key ကို တိုက်ရိုက်ထည့်သွင်းထားသည်
+    # သင်ပေးထားသော API Key
     api_key = "sk_633adf8359fee619335c62b292c20a46886c55e88fe1a3d8"
     
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{request.voice_id}"
@@ -40,7 +40,7 @@ async def generate_audio(request: TTSRequest):
     
     data = {
         "text": request.text,
-        "model_id": "eleven_turbo_v2_5", 
+        "model_id": "eleven_multilingual_v2", 
         "voice_settings": {
             "stability": 0.5,
             "similarity_boost": 0.75
