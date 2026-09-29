@@ -7,6 +7,7 @@ import os
 
 app = FastAPI()
 
+# Frontend ဘယ် Device ကနေ လှမ်းခေါ်ခေါ် လက်ခံနိုင်ရန် CORS ဖွင့်ပေးခြင်း
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,21 +18,20 @@ app.add_middleware(
 
 class TTSRequest(BaseModel):
     text: str
-    voice_id: str = "ClAtsC1ukzT6U0XgCO4c"  # Default (Moe Moe)
+    voice_id: str = "ClAtsC1ukzT6U0XgCO4c"  # Default Voice ID
 
 @app.get("/")
 def home():
-    return {"status": "ElevenLabs Burmese TTS API is running!"}
+    return {"status": "ElevenLabs Burmese TTS API is running successfully!"}
 
 @app.post("/generate-audio")
 async def generate_audio(request: TTSRequest):
     if not request.text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty")
     
-    # Vercel Environment Variable မှ API Key ကို ဆွဲထုတ်သည်
     api_key = os.getenv("ELEVENLABS_API_KEY")
     if not api_key:
-        raise HTTPException(status_code=500, detail="ElevenLabs API Key not configured")
+        raise HTTPException(status_code=500, detail="ElevenLabs API Key not configured in Vercel")
     
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{request.voice_id}"
     
@@ -41,7 +41,6 @@ async def generate_audio(request: TTSRequest):
         "xi-api-key": api_key
     }
     
-    # မြန်မာလို အကောင်းဆုံးထွက်ရန် multilingual v2 မော်ဒယ်ကို အသုံးပြုသည်
     data = {
         "text": request.text,
         "model_id": "eleven_multilingual_v2",
