@@ -16,7 +16,7 @@ app.add_middleware(
 
 class TTSRequest(BaseModel):
     text: str
-    voice_id: str = "ClAtsC1ukzT6U0XgCO4c"
+    voice_id: str = "21m00Tcm4TlvDq8ikWAM"
 
 @app.get("/")
 def home():
