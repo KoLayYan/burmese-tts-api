@@ -3,7 +3,6 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
-import os
 
 app = FastAPI()
 
@@ -28,9 +27,8 @@ async def generate_audio(request: TTSRequest):
     if not request.text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty")
     
-    api_key = os.getenv("ELEVENLABS_API_KEY")
-    if not api_key:
-        raise HTTPException(status_code=500, detail="API Key not found")
+    # ပေးထားသော API Key ကို တိုက်ရိုက်ထည့်သွင်းထားသည်
+    api_key = "sk_633adf8359fee619335c62b292c20a46886c55e88fe1a3d8"
     
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{request.voice_id}"
     
@@ -40,7 +38,6 @@ async def generate_audio(request: TTSRequest):
         "xi-api-key": api_key
     }
     
-    # Dashboard ထဲတွင် သုံးနေသော model_id သို့ ပြောင်းလဲထားသည်
     data = {
         "text": request.text,
         "model_id": "eleven_turbo_v2_5", 
