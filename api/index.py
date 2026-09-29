@@ -28,6 +28,7 @@ async def generate_audio(request: TTSRequest):
     if not request.text.strip():
         raise HTTPException(status_code=400, detail="Text cannot be empty")
     
+    # Vercel Environment Variable မှ API Key ကို ဆွဲထုတ်သည်
     api_key = os.getenv("ELEVENLABS_API_KEY")
     if not api_key:
         raise HTTPException(status_code=500, detail="ElevenLabs API Key not configured")
@@ -53,7 +54,7 @@ async def generate_audio(request: TTSRequest):
     response = requests.post(url, json=data, headers=headers)
     
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail="ElevenLabs API Error")
+        raise HTTPException(status_code=response.status_code, detail=f"ElevenLabs API Error: {response.text}")
     
     output_file = "/tmp/output.mp3"
     with open(output_file, "wb") as f:
