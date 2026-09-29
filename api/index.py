@@ -7,7 +7,6 @@ import os
 
 app = FastAPI()
 
-# Frontend ဘယ် Device ကနေ လှမ်းခေါ်ခေါ် လက်ခံနိုင်ရန် CORS ဖွင့်ပေးခြင်း
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,11 +17,11 @@ app.add_middleware(
 
 class TTSRequest(BaseModel):
     text: str
-    voice_id: str = "ClAtsC1ukzT6U0XgCO4c"  # Default Voice ID
+    voice_id: str = "ClAtsC1ukzT6U0XgCO4c"
 
 @app.get("/")
 def home():
-    return {"status": "ElevenLabs Burmese TTS API is running successfully!"}
+    return {"status": "Running"}
 
 @app.post("/generate-audio")
 async def generate_audio(request: TTSRequest):
@@ -31,7 +30,7 @@ async def generate_audio(request: TTSRequest):
     
     api_key = os.getenv("ELEVENLABS_API_KEY")
     if not api_key:
-        raise HTTPException(status_code=500, detail="ElevenLabs API Key not configured in Vercel")
+        raise HTTPException(status_code=500, detail="API Key not found")
     
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{request.voice_id}"
     
@@ -53,14 +52,10 @@ async def generate_audio(request: TTSRequest):
     response = requests.post(url, json=data, headers=headers)
     
     if response.status_code != 200:
-        raise HTTPException(status_code=response.status_code, detail=f"ElevenLabs API Error: {response.text}")
+        raise HTTPException(status_code=response.status_code, detail=response.text)
     
     output_file = "/tmp/output.mp3"
     with open(output_file, "wb") as f:
         f.write(response.content)
         
-    return FileResponse(
-        output_file, 
-        media_type="audio/mpeg", 
-        filename="speech.mp3"
-    )
+    return FileResponse(output_file, media_type="audio/mpeg", filename="speech.mp3")
