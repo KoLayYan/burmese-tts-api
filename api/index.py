@@ -17,10 +17,11 @@ app.add_middleware(
 
 class TTSRequest(BaseModel):
     text: str
+    voice: str = "my-MM-NilarNeural"  # မူလအသံအနေနဲ့ အမျိုးသမီးသံကို သတ်မှတ်ထားသည်
 
 @app.get("/")
 def home():
-    return {"status": "Burmese TTS API is running on Vercel!"}
+    return {"status": "Burmese TTS API is running with multiple voices!"}
 
 @app.post("/generate-audio")
 async def generate_audio(request: TTSRequest):
@@ -28,7 +29,9 @@ async def generate_audio(request: TTSRequest):
         raise HTTPException(status_code=400, detail="Text cannot be empty")
     
     output_file = "/tmp/output.mp3"
-    voice = "my-MM-NilarNeural"
+    
+    # ရွေးချယ်ထားသော Voice (သို့မဟုတ် မူလအတိုင်း)
+    voice = request.voice if request.voice else "my-MM-NilarNeural"
     
     try:
         communicate = edge_tts.Communicate(request.text, voice)
