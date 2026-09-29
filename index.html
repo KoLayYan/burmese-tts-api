@@ -114,14 +114,14 @@
         try {
             const backendUrl = "https://burmese-tts-api.vercel.app/generate-audio";
 
+            // Voice ID လုံးဝမပို့တော့ဘဲ Backend ရဲ့ Default ကိုပဲ သုံးခိုင်းခြင်း
             const response = await fetch(backendUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    text: text,
-                    voice_id: "21m00Tcm4TlvDq8ikWAM"
+                    text: text
                 })
             });
 
