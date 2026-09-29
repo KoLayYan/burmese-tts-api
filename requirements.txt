@@ -1,4 +1,4 @@
 fastapi
 uvicorn
-edge-tts
+requests
 pydantic
