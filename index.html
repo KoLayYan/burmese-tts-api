@@ -35,7 +35,7 @@
             font-weight: bold;
             color: #cbd5e1;
         }
-        select, textarea {
+        textarea {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
@@ -45,8 +45,6 @@
             border-radius: 8px;
             font-size: 16px;
             box-sizing: border-box;
-        }
-        textarea {
             resize: vertical;
             height: 100px;
         }
@@ -85,11 +83,6 @@
 
 <div class="container">
     <h2>ElevenLabs TTS (မြန်မာ)</h2>
-    
-    <label for="voiceSelect">အသံပိုင်ရှင် (Narrator):</label>
-    <select id="voiceSelect">
-        <option value="21m00Tcm4TlvDq8ikWAM">Rachel (Default Voice)</option>
-    </select>
 
     <label for="textInput">ထုတ်လုပ်လိုသော စာသား:</label>
     <textarea id="textInput" placeholder="မြန်မာစာသားများကို ဤနေရာတွင် ရိုက်ထည့်ပါ..."></textarea>
@@ -103,7 +96,6 @@
 <script>
     async function generateAudio() {
         const text = document.getElementById('textInput').value.trim();
-        const voiceId = document.getElementById('voiceSelect').value;
         const generateBtn = document.getElementById('generateBtn');
         const statusText = document.getElementById('statusText');
         const audioPlayer = document.getElementById('audioPlayer');
@@ -113,7 +105,6 @@
             return;
         }
 
-        // UI ကို Loading ပုံစံပြောင်းရန်
         generateBtn.disabled = true;
         generateBtn.innerText = "ထုတ်လုပ်နေသည်...";
         statusText.style.display = "block";
@@ -121,7 +112,6 @@
         audioPlayer.style.display = "none";
 
         try {
-            // တရားဝင် အလုပ်လုပ်နေသော Vercel Backend URL
             const backendUrl = "https://burmese-tts-api.vercel.app/generate-audio";
 
             const response = await fetch(backendUrl, {
@@ -131,7 +121,7 @@
                 },
                 body: JSON.stringify({
                     text: text,
-                    voice_id: voiceId
+                    voice_id: "21m00Tcm4TlvDq8ikWAM"
                 })
             });
 
