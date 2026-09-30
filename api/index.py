@@ -17,10 +17,12 @@ app.add_middleware(
 
 class TTSRequest(BaseModel):
     text: str
+    voice: str = "my-MM-NilarNeural"
+    rate: str = "+0%"  # ဥပမာ - "-20%" (နှေးစေရန်) သို့မဟုတ် "+20%" (မြန်စေရန်)
 
 @app.get("/")
 def home():
-    return {"status": "Burmese TTS API is running on Vercel!"}
+    return {"status": "Burmese TTS API with speech rate control is running!"}
 
 @app.post("/generate-audio")
 async def generate_audio(request: TTSRequest):
@@ -28,10 +30,12 @@ async def generate_audio(request: TTSRequest):
         raise HTTPException(status_code=400, detail="Text cannot be empty")
     
     output_file = "/tmp/output.mp3"
-    voice = "my-MM-NilarNeural"
+    voice = request.voice if request.voice else "my-MM-NilarNeural"
+    rate = request.rate if request.rate else "+0%"
     
     try:
-        communicate = edge_tts.Communicate(request.text, voice)
+        # edge-tts တွင် rate ထည့်သွင်းခြင်း
+        communicate = edge_tts.Communicate(request.text, voice, rate=rate)
         await communicate.save(output_file)
         
         return FileResponse(
