@@ -35,4 +35,6 @@ async def generate_audio(request: TTSRequest):
         await communicate.save(output_file)
         return FileResponse(output_file, media_type="audio/mpeg", filename="speech.mp3")
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
